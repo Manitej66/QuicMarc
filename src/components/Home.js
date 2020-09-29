@@ -9,7 +9,7 @@ const Home = () => {
     return (
         <div>
             <div className="flex flex-col justify-around items-center h-auto font-myfont">
-                <p className="p-2 text-gray-900 text-3xl font-extrabold text-center font-myfont">Welcome to QuicMark! <br /> Enter the code and<br />post your presence</p>
+                <p className="p-2 text-gray-900 text-3xl font-extrabold text-center font-myfont">Welcome to QuicMarc! <br /> Enter the code and<br />post your presence</p>
                 <input onChange={e => setCode(e.target.value)} type="text" placeholder="Enter code" className="p-3 border border-indigo-400 text-center m-8" />
                 <div>
                     <Link className="w-full" to={`/room/${code.trim()}`}>
