@@ -9,6 +9,7 @@
     "autoprefixer": "9.8.6",
     "firebase": "^7.21.1",
     "react": "^16.13.1",
+    "react-countdown": "^2.2.1",
     "react-dom": "^16.13.1",
     "react-firebase-hooks": "^2.2.0",
     "react-router-dom": "^5.2.0",
