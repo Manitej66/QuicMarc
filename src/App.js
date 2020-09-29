@@ -15,7 +15,9 @@ const Dashboard = React.lazy(()=> import('./components/Dashboard')) ;
 function App() {
   const [user, loading, error] = useAuthState(auth);
   if (loading) return (
-    <React.Suspense fallback={<p>Loading..</p>}>
+    <React.Suspense fallback={<div className="flex flex-col min-h-screen justify-around items-center p-2">
+    <p>loading....</p>
+  </div>}>
     <Nav />
     <div className="flex flex-col min-h-screen justify-around items-center p-2">
       <p>loading....</p>

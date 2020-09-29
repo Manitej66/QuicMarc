@@ -6,6 +6,17 @@ import { Link } from 'react-router-dom';
 const Home = () => {
     const [user, loading, error] = useAuthState(auth);
     const [code, setCode] = React.useState('')
+    if(loading) return (
+        <div className="flex flex-col min-h-screen justify-around items-center p-2">
+        <p>loading....</p>
+      </div>
+      )
+
+      if(error) return (
+        <div className="flex flex-col min-h-screen justify-around items-center p-2">
+        <p>{error}</p>
+        </div>
+      )
     return (
         <div>
             <div className="flex flex-col justify-around items-center h-auto font-myfont">
