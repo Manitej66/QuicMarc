@@ -14,6 +14,7 @@ const Main = React.lazy(() => import("./components/Main"));
 const Create = React.lazy(() => import("./components/Create"));
 const Details = React.lazy(() => import("./components/Details"));
 const Dashboard = React.lazy(() => import("./components/Dashboard"));
+const Error = React.lazy(() => import("./components/Error"));
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
@@ -61,6 +62,7 @@ function App() {
                   user ? <Details /> : <Redirect to="/login" />
                 }
               />
+              <Route path="/error" component={Error} />
               <Route
                 path="/login"
                 render={(props) => (!user ? <Login /> : <Redirect to="/" />)}

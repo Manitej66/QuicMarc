@@ -22,11 +22,21 @@ const Home = () => {
   return (
     <div>
       <div className="flex flex-col justify-around items-center max-h-screen min-h-full font-myfont">
-        <p className="p-2 text-gray-900 text-3xl font-extrabold text-center font-myfont">
-          Welcome to QuicMarc! <br /> Enter the code and
-          <br />
-          post your presence
-        </p>
+        {user ? (
+          <p className="p-2 text-gray-900 text-3xl font-extrabold text-center font-myfont">
+            Welcome <br /> {user.displayName}!
+          </p>
+        ) : (
+          <p className="p-2 text-gray-900 text-3xl font-extrabold text-center font-myfont">
+            Welcome to QuicMarc! <br /> Enter the code and
+            <br />
+            post your presence
+          </p>
+        )}
+
+        <a href="/" className="underline">
+          Learn how to use!
+        </a>
         <input
           onChange={(e) => setCode(e.target.value)}
           type="text"
@@ -46,7 +56,7 @@ const Home = () => {
           </p>
         </Link>
       </div>
-      <div className="flex flex-col justify-around items-center absolute  w-screen bottom-0 p-3  font-myfont">
+      <div className="flex flex-col justify-around items-center fixed w-screen bottom-0 p-3  font-myfont">
         {user ? (
           <button
             onClick={() => auth.signOut()}
