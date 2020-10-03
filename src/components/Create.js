@@ -50,7 +50,8 @@ const Create = () => {
           onChange={(e) => setTime(e.target.value)}
           className="py-2 px-5 m-4 text-left"
         >
-          <option value="3">2 min</option>
+          <option value="1">1 min</option>
+          <option value="2">2 min</option>
           <option value="3">3 min</option>
           <option value="5">5 min</option>
         </select>

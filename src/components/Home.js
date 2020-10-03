@@ -56,7 +56,7 @@ const Home = () => {
           </p>
         </Link>
       </div>
-      <div className="flex flex-col justify-around items-center fixed w-screen bottom-0 p-3  font-myfont">
+      <div className="flex flex-col justify-around items-center w-screen bottom-0 p-3  font-myfont">
         {user ? (
           <button
             onClick={() => auth.signOut()}

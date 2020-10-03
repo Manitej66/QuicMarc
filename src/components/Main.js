@@ -1,105 +1,31 @@
 import React from "react";
 import { firestore } from "../firebase";
 import firebase from "firebase/app";
+import { useHistory } from "react-router-dom";
 const arrayUnion = firebase.firestore.FieldValue.arrayUnion;
-
-function isPrivateMode() {
-  return new Promise(function detect(resolve) {
-    var yes = function () {
-      resolve(true);
-    }; // is in private mode
-    var not = function () {
-      resolve(false);
-    }; // not in private mode
-
-    function detectChromeOpera() {
-      // https://developers.google.com/web/updates/2017/08/estimating-available-storage-space
-      var isChromeOpera =
-        /(?=.*(opera|chrome)).*/i.test(navigator.userAgent) &&
-        navigator.storage &&
-        navigator.storage.estimate;
-      if (isChromeOpera) {
-        navigator.storage.estimate().then(function (data) {
-          return data.quota < 120000000 ? yes() : not();
-        });
-      }
-      return !!isChromeOpera;
-    }
-
-    function detectFirefox() {
-      var isMozillaFirefox = "MozAppearance" in document.documentElement.style;
-      if (isMozillaFirefox) {
-        if (indexedDB == null) yes();
-        else {
-          var db = indexedDB.open("inPrivate");
-          db.onsuccess = not;
-          db.onerror = yes;
-        }
-      }
-      return isMozillaFirefox;
-    }
-
-    function detectSafari() {
-      var isSafari = navigator.userAgent.match(/Version\/([0-9\._]+).*Safari/);
-      if (isSafari) {
-        var testLocalStorage = function () {
-          try {
-            if (localStorage.length) not();
-            else {
-              localStorage.setItem("inPrivate", "0");
-              localStorage.removeItem("inPrivate");
-              not();
-            }
-          } catch (_) {
-            // Safari only enables cookie in private mode
-            // if cookie is disabled, then all client side storage is disabled
-            // if all client side storage is disabled, then there is no point
-            // in using private mode
-            navigator.cookieEnabled ? yes() : not();
-          }
-          return true;
-        };
-
-        var version = parseInt(isSafari[1], 10);
-        if (version < 11) return testLocalStorage();
-        try {
-          window.openDatabase(null, null, null, null);
-          not();
-        } catch (_) {
-          yes();
-        }
-      }
-      return !!isSafari;
-    }
-
-    function detectEdgeIE10() {
-      var isEdgeIE10 =
-        !window.indexedDB && (window.PointerEvent || window.MSPointerEvent);
-      if (isEdgeIE10) yes();
-      return !!isEdgeIE10;
-    }
-
-    // when a browser is detected, it runs tests for that browser
-    // and skips pointless testing for other browsers.
-    if (detectChromeOpera()) return;
-    if (detectFirefox()) return;
-    if (detectSafari()) return;
-    if (detectEdgeIE10()) return;
-
-    // default navigation mode
-    return not();
-  });
-}
 
 const Main = ({ code }) => {
   const [roll, setRoll] = React.useState("");
   const [load, setLoad] = React.useState(false);
   const id = window.location.pathname.split("/")[2];
+  let history = useHistory();
+
+  React.useEffect(() => {
+    (async () => {
+      if ("storage" in navigator && "estimate" in navigator.storage) {
+        const { usage, quota } = await navigator.storage.estimate();
+        console.log(`Using ${usage} out of ${quota} bytes.`);
+        if (quota < 120000000) {
+          history.push("/error");
+        }
+      }
+    })();
+  }, []);
 
   const post = async () => {
-    if (localStorage.getItem(`${id}`) === "done" && !isPrivateMode()) {
+    if (localStorage.getItem(`${id}`) === "done") {
       alert("You already submitted!");
-    } else if (localStorage.getItem(`${id}`) !== "done" && !isPrivateMode()) {
+    } else {
       setLoad(true);
       firestore
         .collection("attendance")
@@ -129,8 +55,6 @@ const Main = ({ code }) => {
             }
           }
         });
-    } else {
-      alert("App doesn't work on incognito");
     }
   };
 
@@ -140,6 +64,7 @@ const Main = ({ code }) => {
         <input
           className="p-2 border w-3/4 text-center shadow-xs m-4 sm:w-1/2"
           placeholder="Enter your roll"
+          maxLength={3}
           onChange={(e) => setRoll(e.target.value)}
         />
         <button
