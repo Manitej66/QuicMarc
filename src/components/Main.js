@@ -45,7 +45,6 @@ const Main = ({ code }) => {
                   .then(() => {
                     localStorage.setItem(`${id}`, "done");
                     setLoad(false);
-                    alert("Success!");
                   })
                   .catch((e) => console.log(e));
               })();
