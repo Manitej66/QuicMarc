@@ -28,6 +28,7 @@ const Main = () => {
       if (localStorage.getItem(`${code}`) === "done") {
         alert("You already submitted!");
       } else {
+        setLoad(true);
         firestore
           .collection("attendance")
           .doc(code)
@@ -38,7 +39,6 @@ const Main = () => {
                 d.data().present.length < d.data().limit
               ) {
                 (async () => {
-                  setLoad(true);
                   const doc = firestore.collection("attendance").doc(code);
                   await doc
                     .update({
