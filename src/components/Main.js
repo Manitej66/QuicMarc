@@ -1,59 +1,62 @@
 import React from "react";
 import { firestore } from "../firebase";
 import firebase from "firebase/app";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 const arrayUnion = firebase.firestore.FieldValue.arrayUnion;
 
-const Main = ({ code }) => {
+const Main = () => {
   const [roll, setRoll] = React.useState("");
   const [load, setLoad] = React.useState(false);
-  const id = window.location.pathname.split("/")[2];
   let history = useHistory();
+  let { code } = useParams();
 
   React.useEffect(() => {
     (async () => {
       if ("storage" in navigator && "estimate" in navigator.storage) {
-        const { usage, quota } = await navigator.storage.estimate();
-        console.log(`Using ${usage} out of ${quota} bytes.`);
+        const { quota } = await navigator.storage.estimate();
         if (quota < 120000000) {
           history.push("/error");
         }
       }
     })();
-  }, []);
+  }, [code, history]);
 
   const post = async () => {
-    if (localStorage.getItem(`${id}`) === "done") {
-      alert("You already submitted!");
+    if (roll.length !== 3) {
+      alert("Enter roll correctly");
     } else {
-      firestore
-        .collection("attendance")
-        .doc(id)
-        .onSnapshot((d) => {
-          if (d.exists) {
-            if (
-              d.data().endsAt >= new Date().getTime() &&
-              d.data().present.length < d.data().limit
-            ) {
-              (async () => {
-                setLoad(true);
-                const doc = firestore.collection("attendance").doc(id);
-                await doc
-                  .update({
-                    present: arrayUnion(roll),
-                  })
-                  .then(() => {
-                    localStorage.setItem(`${id}`, "done");
-                    setLoad(false);
-                  })
-                  .catch((e) => console.log(e));
-              })();
-            } else {
-              alert("Time ended!");
-              setLoad(false);
+      if (localStorage.getItem(`${code}`) === "done") {
+        alert("You already submitted!");
+      } else {
+        firestore
+          .collection("attendance")
+          .doc(code)
+          .onSnapshot((d) => {
+            if (d.exists) {
+              if (
+                d.data().endsAt >= new Date().getTime() &&
+                d.data().present.length < d.data().limit
+              ) {
+                (async () => {
+                  setLoad(true);
+                  const doc = firestore.collection("attendance").doc(code);
+                  await doc
+                    .update({
+                      present: arrayUnion(roll),
+                    })
+                    .then(() => {
+                      localStorage.setItem(`${code}`, "done");
+                      setLoad(false);
+                    })
+                    .catch((e) => console.log(e));
+                })();
+              } else {
+                alert("Time ended!");
+                setLoad(false);
+              }
             }
-          }
-        });
+          });
+      }
     }
   };
 
