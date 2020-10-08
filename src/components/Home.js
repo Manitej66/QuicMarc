@@ -41,6 +41,7 @@ const Home = () => {
           onChange={(e) => setCode(e.target.value)}
           type="text"
           placeholder="Enter code"
+          minLength={10}
           className="p-3 border border-indigo-400 text-center m-8"
         />
         <div>

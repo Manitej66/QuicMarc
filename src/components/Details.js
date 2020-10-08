@@ -21,7 +21,6 @@ const Details = () => {
         </p>
       );
     } else {
-      // Render a countdown
       return (
         <p className="p-2 bg-indigo-800 text-white text-center rounded-md shadow-md">
           Time left - {minutes}:{seconds}
@@ -61,6 +60,19 @@ const Details = () => {
       </div>
       <div className="w-3/4 md:w-1/2">
         {value.present.sort().map((d) => (
+          <p
+            key={d}
+            className="p-2 m-3 bg-blue-300 text-center rounded-md shadow-sm"
+          >
+            {d}
+          </p>
+        ))}
+      </div>
+      <p className="font-bold text-2xl text-center p-2 text-indigo-600">
+        Late ({value.late.length})
+      </p>
+      <div className="w-3/4 md:w-1/2">
+        {value.late.sort().map((d) => (
           <p
             key={d}
             className="p-2 m-3 bg-blue-300 text-center rounded-md shadow-sm"

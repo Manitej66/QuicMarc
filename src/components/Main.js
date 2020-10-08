@@ -10,25 +10,16 @@ const Main = () => {
   let history = useHistory();
   let { code } = useParams();
 
-  React.useEffect(() => {
-    (async () => {
-      if ("storage" in navigator && "estimate" in navigator.storage) {
-        const { quota } = await navigator.storage.estimate();
-        if (quota < 120000000) {
-          history.push("/error");
-        }
-      }
-    })();
-  }, [code, history]);
-
   const post = async () => {
+    setLoad(true);
     if (roll.length !== 3) {
+      setLoad(false);
       alert("Enter roll correctly");
     } else {
       if (localStorage.getItem(`${code}`) === "done") {
+        setLoad(false);
         alert("You already submitted!");
       } else {
-        setLoad(true);
         firestore
           .collection("attendance")
           .doc(code)
@@ -47,6 +38,24 @@ const Main = () => {
                     .then(() => {
                       localStorage.setItem(`${code}`, "done");
                       setLoad(false);
+                      history.push("/");
+                    })
+                    .catch((e) => console.log(e));
+                })();
+              } else if (
+                d.data().endsAt < new Date().getTime() &&
+                d.data().present.length < d.data().limit
+              ) {
+                (async () => {
+                  const doc = firestore.collection("attendance").doc(code);
+                  await doc
+                    .update({
+                      late: arrayUnion(roll),
+                    })
+                    .then(() => {
+                      localStorage.setItem(`${code}`, "done");
+                      setLoad(false);
+                      history.push("/");
                     })
                     .catch((e) => console.log(e));
                 })();

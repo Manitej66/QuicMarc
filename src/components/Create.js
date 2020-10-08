@@ -19,6 +19,7 @@ const Create = () => {
           createdAt: new Date().getTime(),
           endsAt: new Date().getTime() + parseInt(time) * 60 * 1000,
           present: [],
+          late: [],
           author: auth.currentUser.email,
           limit: parseInt(count),
         })
