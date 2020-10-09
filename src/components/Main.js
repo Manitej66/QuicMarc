@@ -10,7 +10,9 @@ const Main = () => {
   let history = useHistory();
   let { code } = useParams();
 
-  const post = async () => {
+  React.useEffect(() => console.log(new Date().getTime()));
+
+  const post = async (v) => {
     setLoad(true);
     if (roll.length !== 3) {
       setLoad(false);
@@ -26,7 +28,7 @@ const Main = () => {
           .onSnapshot((d) => {
             if (d.exists) {
               if (
-                d.data().endsAt >= new Date().getTime() &&
+                d.data().endsAt >= parseInt(v) &&
                 d.data().present.length < d.data().limit
               ) {
                 (async () => {
@@ -43,7 +45,7 @@ const Main = () => {
                     .catch((e) => console.log(e));
                 })();
               } else if (
-                d.data().endsAt < new Date().getTime() &&
+                d.data().endsAt < parseInt(v) &&
                 d.data().present.length < d.data().limit
               ) {
                 (async () => {
@@ -79,7 +81,7 @@ const Main = () => {
           onChange={(e) => setRoll(e.target.value)}
         />
         <button
-          onClick={post}
+          onClick={() => post(new Date().getTime())}
           className="py-2 px-4 bg-purple-800 text-white m-4 shadow-sm"
         >
           Present
