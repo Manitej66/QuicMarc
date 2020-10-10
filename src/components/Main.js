@@ -51,7 +51,7 @@ const Main = () => {
                   const doc = firestore.collection("attendance").doc(code);
                   await doc
                     .update({
-                      late: arrayUnion(roll),
+                      late: arrayUnion(roll.toLocaleUpperCase()),
                     })
                     .then(() => {
                       localStorage.setItem(`${code}`, "done");
