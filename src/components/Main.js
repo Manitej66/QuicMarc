@@ -54,6 +54,7 @@ const Main = () => {
                       late: arrayUnion(roll.toLocaleUpperCase()),
                     })
                     .then(() => {
+                      localStorage.clear();
                       localStorage.setItem(`${code}`, "done");
                       setLoad(false);
                       history.push("/");
