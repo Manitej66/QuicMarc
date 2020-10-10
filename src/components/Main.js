@@ -10,8 +10,6 @@ const Main = () => {
   let history = useHistory();
   let { code } = useParams();
 
-  React.useEffect(() => console.log(new Date().getTime()));
-
   const post = async (v) => {
     setLoad(true);
     if (roll.length !== 3) {
@@ -38,6 +36,7 @@ const Main = () => {
                       present: arrayUnion(roll),
                     })
                     .then(() => {
+                      localStorage.clear();
                       localStorage.setItem(`${code}`, "done");
                       setLoad(false);
                       history.push("/");
@@ -65,6 +64,9 @@ const Main = () => {
                 alert("Time ended!");
                 setLoad(false);
               }
+            } else {
+              setLoad(false);
+              alert("Class doesn't exist");
             }
           });
       }
@@ -81,12 +83,13 @@ const Main = () => {
           onChange={(e) => setRoll(e.target.value)}
         />
         <button
+          id="sub"
+          disabled={load ? true : false}
           onClick={() => post(new Date().getTime())}
           className="py-2 px-4 bg-purple-800 text-white m-4 shadow-sm"
         >
-          Present
+          {load ? <p>Please wait...!</p> : <p>Submit</p>}
         </button>
-        {load ? <p>Please wait...!</p> : null}
       </div>
     </div>
   );
