@@ -33,7 +33,7 @@ const Main = () => {
                   const doc = firestore.collection("attendance").doc(code);
                   await doc
                     .update({
-                      present: arrayUnion(roll),
+                      present: arrayUnion(roll.toLocaleUpperCase()),
                     })
                     .then(() => {
                       localStorage.clear();
