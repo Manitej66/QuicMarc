@@ -4,13 +4,13 @@ import "firebase/firestore";
 
 firebase.initializeApp({
   apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: "express-attendance-df979.firebaseapp.com",
-  databaseURL: "https://express-attendance-df979.firebaseio.com",
-  projectId: "express-attendance-df979",
-  storageBucket: "express-attendance-df979.appspot.com",
-  messagingSenderId: "755735351956",
-  appId: "1:755735351956:web:9608be490c7f39cbcc9a81",
-  measurementId: "G-F93NJVWXQN",
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_DB_URL,
+  projectId: process.env.REACT_APP_ID,
+  storageBucket: process.env.REACT_APP_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_APP_MID,
 });
 
 export const auth = firebase.auth();
