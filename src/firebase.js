@@ -3,7 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 
 firebase.initializeApp({
-  apiKey: "AIzaSyCAhUUVPQqOu_OHJNKBbIs_HApr51liYV8",
+  apiKey: process.env.REACT_APP_API_KEY,
   authDomain: "express-attendance-df979.firebaseapp.com",
   databaseURL: "https://express-attendance-df979.firebaseio.com",
   projectId: "express-attendance-df979",
